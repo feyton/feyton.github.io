@@ -33,6 +33,9 @@ nav {
 
 }
 
+.flex {
+    display: flex;
+}
 
 nav a:first-child {
     float: left;
@@ -81,8 +84,232 @@ nav li a {
 
 .hero {
     height: 100vh;
-    background-color: black;
+    /* background-color: black; */
+    vertical-align: center;
 }
+
+.pt-5 {
+    padding-top: 3rem;
+}
+
+.py-2 {
+    padding: 2rem 0;
+}
+
+.pt-1 {
+    padding-top: 1rem;
+}
+
+.br-10 {
+    border-radius: 10px;
+}
+
+.sub-header {
+    color: rgb(89, 250, 151);
+    font-size: 30px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+.hero img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.button {
+    text-align: center;
+}
+
+.hero button {
+    padding: 10px 40px;
+    border-radius: 20px;
+    background-color: red;
+    color: white;
+
+}
+
+header {
+    height: 100vh;
+    background-image: url("background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.hero h1 {
+    color: white;
+}
+
+/* Card styling */
+
+
+.card {
+    width: 200px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 20px;
+    background-color: white;
+    margin: 10px;
+    justify-content: center;
+    text-align: center;
+
+}
+
+.card .image {
+    height: 80%;
+    width: 100%;
+    margin: 0 auto;
+
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* border-radius: 10px; */
+}
+
+.product-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-details {
+    height: 20%;
+    display: block;
+    text-align: center;
+    padding: 2px;
+    justify-content: center;
+}
+
+.product-details .name {
+    padding: 3px 0;
+}
+
+.price {
+    background-color: #444;
+    padding: 3px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    width: 60%;
+    border-radius: 10px;
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.cart {
+    height: 100px;
+    width: 200px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    background-color: rgb(54, 158, 184);
+    z-index: 100;
+    opacity: 0;
+    transition: .3s all;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 4px;
+}
+
+.cart .detail {
+    height: 50%;
+    padding: 0 4px;
+    font-weight: bold;
+}
+
+.cart a {
+    background-color: aqua;
+    padding: 5px 10px;
+    border-radius: 10px;
+
+}
+
+.price {
+    transition: .3s all;
+    font-weight: bolder;
+}
+
+.card:hover>.cart {
+    opacity: 1;
+    transition: .3s ease-in-out all;
+}
+
+.card:hover .price {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: scale(1.3);
+    z-index: 100;
+    transition: .3s all;
+    background-color: rgb(192, 120, 38);
+    color: white;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    padding: 5px 10px;
+    border-radius: 10px;
+
+}
+
+.card:hover {
+    box-shadow: 3px 3px 3px solid rgb(221, 221, 221);
+}
+
+/* End card styling */
+
+
+/* footer */
+
+footer {
+    height: 200px;
+    background-color: #444;
+    color: black;
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+form {
+    display: block;
+    background-color: aliceblue;
+    margin: 10px 10px;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+footer ul {
+    color: white;
+    justify-content: center;
+    vertical-align: center;
+
+
+}
+
+footer a {
+    color: white;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+input {
+    margin: 10px 5px;
+    display: block;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid black;
+    border-radius: 10px;
+    border-left: 1px solid black;
+    padding: 10px;
+}
+
+/* footer */
 
 /* Utilities */
 
@@ -92,4 +319,23 @@ nav li a {
 
 .b-red {
     background-color: red;
+}
+
+.row {
+    display: flex;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.center {
+    justify-content: center;
+    text-align: center;
+}
+
+.display-1 {
+    font-size: 50px;
+    line-height: 1.5;
+    letter-spacing: -1;
 }

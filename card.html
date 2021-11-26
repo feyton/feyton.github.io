@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card</title>
+    <style>
+        body {
+            background-color: #444;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+        }
+
+        .hero {
+            display: flex;
+        }
+
+        .card {
+            width: 200px;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 20px;
+            background-color: white;
+            margin: auto;
+            top: 50%;
+
+        }
+
+        .card .image {
+            height: 80%;
+            width: 90%;
+            margin: 0 auto;
+
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .product-details {
+            height: 20%;
+            display: block;
+        }
+
+        .cart {
+            height: 100px;
+            width: 200px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            overflow: hidden;
+            background-color: bisque;
+            z-index: 100;
+            opacity: 0;
+            transition: .3s all;
+        }
+
+        .cart .detail {
+            height: 50%;
+        }
+
+        .price {
+            transition: .3s all;
+            font-weight: bolder;
+        }
+
+        .card:hover>.cart {
+            opacity: 1;
+            transition: .3s ease-in-out all;
+        }
+
+        .card:hover .price {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: scale(1.3);
+            z-index: 100;
+            transition: .3s all;
+            background-color: rgb(192, 120, 38);
+            color: white;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 5px 10px;
+            border-radius: 10px;
+
+        }
+
+        .card:hover {
+            box-shadow: 3px 3px 3px solid rgb(221, 221, 221);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+
+        <div class="card">
+            <div class="image overflow-hidden">
+                <img src="https://cdn.shopify.com/s/files/1/1859/8979/files/CPI-0158-inline-img-01.jpg?v=1553883913"
+                    alt="" class="w-100">
+            </div>
+            <div class="product-details">
+                <div class="name bold">
+                    <h5>Pillover</h5>
+                </div>
+                <div class="price bold">$ 400</div>
+            </div>
+            <div class="cart">
+                <div class="detail">
+                    <p>The best in class pillover is found here</p>
+                </div>
+                <div class="button">
+                    <a href="" class="button add-t0-cart disabled" disabled>Add To Cart</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
