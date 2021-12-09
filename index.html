@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andela Firebase</title>
+    <link rel="stylesheet" href="main.css" class="css">
+</head>
+
+<body>
+    <main>
+
+        <div class="card blog">
+            <h2>Welcome to Our To Do</h2>
+            <form action="#nothing" id="blog-form">
+                <input type="text" name="name" placeholder="Name" id="">
+                <input type="text" name="email" placeholder="Name" id="">
+                <input type="submit" name="submit" value="Send" id="">
+
+
+            </form>
+
+
+
+        </div>
+
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7rdnDKUzQ6WJgceFUJ9U0KiixyW14a5A",
+            authDomain: "blog-app-3fa1a.firebaseapp.com",
+            projectId: "blog-app-3fa1a",
+            storageBucket: "blog-app-3fa1a.appspot.com",
+            messagingSenderId: "1064759561001",
+            appId: "1:1064759561001:web:efe0680512c34ad044c538"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    </script>
+    <script src="main.js"></script>
+</body>
+
+</html>
