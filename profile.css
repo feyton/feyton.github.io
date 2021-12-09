@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Josefin+Slab:wght@300;500;600&family=Lato&family=Lexend:wght@400;500&display=swap');
+
+:root {
+    --Josefin: "Josefin Slab", sans-serif;
+    --Lexend: 'Lexend', sans-serif;
+    --Lato: 'Lato', sans-serif;
+    --Abel: 'Abel', sans-serif;
+    --light-blue: rgba(33, 141, 241, 1);
+    --dark-blue: rgba(33, 141, 241, 0.31);
+    --dark-grey: rgba(35, 43, 51, 0.9);
+    --light-cyan: rgba(130, 180, 195, 1);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: 0.3s ease-in-out all;
+}

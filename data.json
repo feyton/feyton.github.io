@@ -1,0 +1,18 @@
+{
+    "user-stories": [
+        {
+            "id": 1,
+            "name": "Fabrice",
+            "story": "Hello world",
+            "age": 24
+        },
+        {
+            "id": 2,
+            "name": "Fahrer",
+            "story": "Hello firebase",
+            "age": 15
+            
+        }
+    ]
+  
+}
