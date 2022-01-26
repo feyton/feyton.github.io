@@ -137,30 +137,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     ) {
       displayLoader();
       const formData = new FormData(e.target);
-      var data = {};
-      for (var [key, value] of formData.entries()) {
-        data[key] = value;
-      }
+
       saveUserData(formData);
-      // $.ajax({
-      //   method: "POST",
-      //   url: baseUrl + "api/v1/uploads",
-      //   contentType: false,
-      //   processData: false,
-      //   data: formData,
-      //   success: (response) => {
-      //     console.log(response);
-      //     data["image"] = response.path;
-      //     console.log(data);
-      //     saveUserData(data);
-      //   },
-      //   error: (error) => {
-      //     console.log(error.response);
-      //   },
-      //   complete: () => {
-      //     displayLoader("hide");
-      //   },
-      // });
     } else {
       alert("Form is invalid");
     }
@@ -198,16 +176,15 @@ document.addEventListener("DOMContentLoaded", (e) => {
     console.warn(error);
   }
 
-  const saveUserData = (data) => {
+  const saveUserData = (formData) => {
     $.ajax({
-      method: "POST",
-      data: data,
-      contentType: false,
-      processData: false,
       url: baseUrl + "api/v1/accounts/signup",
+      method: "POST",
+      processData: false,
+      contentType: false,
+      data: formData,
       success: (response) => {
         console.log(response);
-
         notifyUser(
           "Your account hase been created. You are being redirected",
           "info"
@@ -216,29 +193,22 @@ document.addEventListener("DOMContentLoaded", (e) => {
           window.location.pathname = "/";
         }, 3000);
       },
-      error: (data) => {
-        console.log(data);
-        let errData = data.responseJSON;
-        switch (data.status) {
-          case 409:
-            notifyUser(errData.message, "error");
-            break;
+      error: (error) => {
+        switch (error.status) {
           case 400:
-            // let el = document.createElement("ul");
-            // Object.keys(errData.data).forEach((key) => {
-            //   el.innerHTML += `<li>${errData.data[key]}</li>`;
-            // });
-
-            notifyUser(errData.data, "error");
+            let data = error.responseJSON.data;
+            console.log(data);
+            let ul = document.createElement("ul");
+            Object.keys(data).forEach((key) => {
+              let el = `<li>${key}: ${data[key]}</li><br>`;
+              ul.innerHTML += el;
+            });
+            notifyUser(ul, "error");
             break;
 
           default:
-            notifyUser(errData.message, "error");
             break;
         }
-      },
-      complete: () => {
-        displayLoader("hide");
       },
     });
   };

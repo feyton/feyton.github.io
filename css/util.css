@@ -56,7 +56,12 @@ h2 {
 .capitalize {
     text-transform: capitalize;
 }
-
+.mt-2 {
+    margin-top: 2rem;
+}
+.font-primary {
+    font-family: var(--Lexend);
+}
 
 /* LOADER */
 .loader-div {

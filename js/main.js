@@ -24,7 +24,19 @@ $(document).ajaxError((error) => {
     case 500:
       notifyUser("Something happened on our end", "error");
       break;
-
+    case 400:
+      let data = error.responseJSON.data;
+      console.log(data);
+      let ul = document.createElement("ul");
+      Object.keys(data).forEach((key) => {
+        let el = `<li>${key}: ${data[key]}</li><br>`;
+        ul.innerHTML += el;
+      });
+      notifyUser(ul, "error");
+      break;
+    case 409:
+      notifyUser(errData.message, "error");
+      break;
     default:
       break;
   }
@@ -255,7 +267,7 @@ disableds.forEach((disabled) => {
 const checkLoginForm = () => {
   try {
     const form = document.querySelector("#login-form");
-    form.addEventListener("click", (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = form.email.value;
       const password = form.password.value;

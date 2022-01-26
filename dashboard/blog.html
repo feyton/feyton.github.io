@@ -58,8 +58,8 @@
                 </div>
                 <ul>
                     <li>
-                        <form action="#search">
-                            <input type="text" placeholder="Search">
+                        <form action="#search" class="search-form">
+                            <input type="text" placeholder="Search" name="search">
                             <button class="search" type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </li>
@@ -71,7 +71,7 @@
             </nav>
             <div class="blog-view">
                 <div class="title-div">
-                    <h2>Blogs</h2>
+                    <h2 class="page-title">Blogs</h2>
                 </div>
                 <div class="blog-list">
                     <div class="list-head">
@@ -83,14 +83,16 @@
 
                     </div>
                     <div class="list-items" id="post-items">
-
+                        <div class="center title">
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                        </div>
 
                     </div>
+
+
                     <div class="list-actions">
-                        <form action="">
+                        <form action="" class="post-mass-action">
                             <div class="select-action">
-
-
                                 <label for="list-options">Choose what to do with selected posts:</label>
                                 <select name="option" id="list-options">
                                     <option value=""></option>
@@ -100,11 +102,17 @@
                                     <option value="draft">Draft</option>
 
                                 </select>
-                                <button>GO</button>
+                                <button type="submit">GO</button>
                             </div>
 
                         </form>
                     </div>
+
+                    <div class="pagination flex center">
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
