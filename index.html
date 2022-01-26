@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.css">
 
 
+    <link rel="stylesheet" href="./css/util.css" class="css">
     <link rel="stylesheet" href="./css/main.css" class="css">
 </head>
 
@@ -43,11 +45,11 @@
                         </ul>
 
                     </li>
-                    <li class="menu-item profile-img logged-in"><a href="#here"><img src="./assets/profile.JPG" alt=""
+                    <li class="menu-item profile-img logged-in"><a href="#here"><img src="" alt=""
                                 class="profile-picture"><i class="fa fa-chevron-down"></i></a>
                         <ul>
                             <li><a href="./pages/profile.html">Profile</a></li>
-                            <li><a href="./dashboard/dashboard.html admin">Dashboard</a></li>
+                            <li class="admin"><a href="./dashboard/dashboard.html">Dashboard</a></li>
                             <li><a href="#logout" class="logout">Logout</a></li>
                         </ul>
 
@@ -112,105 +114,7 @@
             <div class="blog-section">
                 <section class="blog-list">
                     <!-- Blog -->
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                                alt="">
-                            <div class="date-info">
-                                <h2>24-06</h2>
-                                <hr>
-                                <h2>2021</h2>
-                            </div>
-                        </div>
-                        <div class="blog-info">
-
-                            <a href="detail.html" class="title">
-
-                                <h2>The new mac-book is the laptop on the market</h2>
-                            </a>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa laborum dolorum nihil? Non,
-                                a
-                                tenetur et aperiam hic illo maiores quibusdam iure tempora deserunt fuga eaque ipsam,
-                                voluptatem
-                                magni nobis.</p><br>
-
-                            <a href="detail.html" class="btn btn-more">Read more&nbsp;<i class="fa fa-fighter-jet"
-                                    aria-hidden="true"></i></a><br>
-
-                        </div>
-                        <br>
-
-                    </div>
-                    <hr>
-
-
-                    <!-- End blog -->
-                    <!-- Blog -->
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <img src="https://media.cnn.com/api/v1/images/stellar/prod/211025072623-macbook-pro-14-display-5.jpg?q=x_0,y_0,h_2268,w_4030,c_fill/h_720,w_1280"
-                                alt="">
-                            <div class="date-info">
-                                <h2>24-04</h2>
-                                <hr>
-                                <h2>2020</h2>
-                            </div>
-                        </div>
-                        <div class="blog-info">
-
-                            <a href="./pages/detail.html" class="title">
-
-                                <h2>The new mac-book is the laptop on the market</h2>
-                            </a>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa laborum dolorum nihil? Non,
-                                a
-                                tenetur et aperiam hic illo maiores quibusdam iure tempora deserunt fuga eaque ipsam,
-                                voluptatem
-                                magni nobis.</p><br>
-                            <a href="./pages/detail.html" class="btn btn-more">Read more&nbsp;<i
-                                    class="fa fa-fighter-jet" aria-hidden="true"></i></a><br>
-
-                        </div>
-                        <br>
-
-                    </div>
-                    <hr>
-
-
-                    <!-- End blog -->
-                    <!-- Blog -->
-                    <div class="blog-card">
-                        <div class="blog-image">
-                            <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                                alt="">
-                            <div class="date-info">
-                                <h2>24-06</h2>
-                                <hr>
-                                <h2>2018</h2>
-                            </div>
-                        </div>
-                        <div class="blog-info">
-
-                            <a href="./pages/detail.html" class="title">
-
-                                <h2>The new mac-book is the laptop on the market</h2>
-                            </a>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa laborum dolorum nihil? Non,
-                                a
-                                tenetur et aperiam hic illo maiores quibusdam iure tempora deserunt fuga eaque ipsam,
-                                voluptatem
-                                magni nobis.</p><br>
-
-                            <a href="./pages/detail.html" class="btn btn-more">Read more&nbsp;<i
-                                    class="fa fa-fighter-jet" aria-hidden="true"></i></a><br>
-
-                        </div>
-                        <br>
-
-                    </div>
-                    <hr>
-
-
+                    <h3 class="center">No posts yet</h3>
                     <!-- End blog -->
                     <div class="load-more">
 
@@ -353,8 +257,8 @@
 
                     <form action="#request">
                         <input type="text" name="name" placeholder="Name" required>
-                        <input type="email" name="email" placeholder="E-mail" id="" required>
-                        <textarea name="message" placeholder="Message" required id="" rows="5"></textarea>
+                        <input type="email" name="email" placeholder="E-mail" required>
+                        <textarea name="message" placeholder="Message" required rows="5"></textarea>
                         <p>By submitting this form, you agree with our terms and privacy policy.</p>
                         <input type="submit" value="Send">
 
@@ -401,7 +305,10 @@
         </div>
     </main>
 
-    <script src="./js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script src="./js/main.js" type="module"></script>
 
     <!-- MODAL -->
     <div class="modal" id="login-modal">
@@ -438,6 +345,8 @@
             <div class="juice" data-percent=0%></div>
         </div>
     </div>
+
+    <script src="./js/index.js" type="module" defer></script>
 
 
 </body>
