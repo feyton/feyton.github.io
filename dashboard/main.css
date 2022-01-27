@@ -400,10 +400,30 @@ main .blog-list .list-items {
 
 main .blog-list .list-head, main .blog-list .list-items .item {
     display: grid;
-    grid-template-columns: 1fr 1fr 6fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 4fr 2fr 2fr;
     border-bottom: 1px solid grey;
     padding: 5px;
     font-family: var(--head-font);
+}
+main .blog-list .true {
+    font-weight: bold;
+    color: #00865a;
+}
+main .blog-list .true::before{
+    content: "\f560";
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    margin-right: 3px;
+    color: green;
+}
+main .blog-list .false {
+    font-weight: bold;
+    color: #012049; 
+}
+main .blog-list .false::before {
+    content: "\f28d";
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    margin-right: 3px;
+    color: red;
 }
 
 main .blog-list .list-head {
@@ -855,14 +875,54 @@ main .user-list button {
     color: green;
 }
 
+.pagination {
+    margin: 1rem auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+
+}
+
+.pagination span {
+    margin: 0rem .2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #218DF1;
+    height: 30px;
+    width: 30px;
+    justify-content: center;
+    font-family: var(--Lexend);
+    cursor: pointer;
+    color: rgb(0, 12, 63);
+    font-weight: bold;
+    transition: .3s all;
+}
+.pagination span i {
+    pointer-events: none;
+    font-weight: bold;
+}
+.pagination span.active {
+    background-color: rgb(34, 12, 12);
+    color: white;
+}
+.pagination span:hover {
+    transition: .3s all;
+    background-color: #1b2630;
+    color: white;
+}
 @media screen and (max-width: 1250px) {
     body {
         min-width: 300px !important;
     }
 }
+
 @media screen and (max-width: 1182px) {
     body {
         min-width: 300px !important;
     }
-    
+
 }

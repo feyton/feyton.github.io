@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="main.css" class="css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.css">
+    <link rel="stylesheet" href="../css/util.css">
+    <link rel="stylesheet" href="./main.css" class="css">
 </head>
 
 <body>
@@ -32,7 +34,7 @@
                                 class="fas fa-chalkboard fa-fw"></i>DASHBOARD</a></li>
                     <li class="menu-item active"><a href="./blog.html"><i
                                 class="fas fa-clipboard-list fa-fw"></i>BLOG</a></li>
-                    <li class="menu-item"><a href="./query.html"><i class="far fa-comments fa-fw"></i>QUERIES</a>
+                    <li class="menu-item"><a href="./query.html"><i class="far fa-comments fa-fw"></i>COMMENTS</a>
                     </li>
                     <li class="menu-item"><a href="./users.html"><i class="far fa-user fa-fw"></i>USERS</a></li>
                     <!-- <li class="menu-item">PROFILE</li> -->
@@ -43,6 +45,8 @@
                 <h3>ACTIONS</h3>
                 <ul>
                     <li><a href="../index.html"><i class="fas fa-external-link-alt f-w"></i>&nbsp;MY SITE</a></li>
+                    <li><a href="../pages/profile.html"><i class="fas fa-external-link-alt f-w"></i>&nbsp;MY PROFILE</a>
+                    </li>
                     <li class="logout"><i class="fas fa-sign-out-alt fa-fw"></i>&nbsp;LOGOUT</li>
                 </ul>
             </div>
@@ -56,104 +60,78 @@
                 </div>
                 <ul>
                     <li>
-                        <form action="#search">
-                            <input type="text" placeholder="Search">
+                        <form action="#search" class="search-form">
+                            <input type="text" placeholder="Search posts" name="search">
                             <button class="search" type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </li>
                     <li class="user">
-                        <img src="./download.png" class="profile-picture" alt="">
-                        <span>Fabrice</span>
+                        <img src="" class="profile-picture" alt="">
+                        <span class="user-name">Fabrice</span>
                     </li>
                 </ul>
             </nav>
             <div class="blog-view">
                 <div class="title-div">
-                    <h2>Blogs</h2>
+                    <h2 class="page-title">Blogs</h2>
                 </div>
                 <div class="blog-list">
                     <div class="list-head">
                         <div>Select</div>
-                        <div>Star</div>
+                        <div>Status</div>
                         <div>Title</div>
                         <div>Date</div>
                         <div>Actions</div>
 
                     </div>
-                    <div class="list-items">
-                        <div class="item">
-                            <div class="checkbox">
-                                <input type="checkbox" name="checkbox">
-                            </div>
-                            <div class="star">
-                                <i class="far fa-star"></i>
-                            </div>
-                            <div class="post-title">
-                                <h6>Lorem ipsum dolor sit amet. Lorem ipsum, dolor sit amet consectetur adipisicing
-                                    elit.</h6>
-                            </div>
-                            <div class="post-date">
-                                <span>25/06/2021</span>
-                            </div>
-                            <div class="post-actions">
-                                <a href="#kd"><i class="fas fa-eye"></i></a>
-                                <a href="#kd"><i class="fas fa-edit"></i></a>
-                                <a href="#kd" class="confirm"><i class="fas fa-trash"></i></a>
-
-                            </div>
+                    <div class="list-items" id="post-items">
+                        <div class="center title">
+                            <br><br>
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                            <br><br>
+                            <h2 class="font-primary">No posts yet</h2>
+                            <br><br>
                         </div>
 
                     </div>
+
+
                     <div class="list-actions">
-                        <form action="">
+                        <form action="" class="post-mass-action">
                             <div class="select-action">
-
-
                                 <label for="list-options">Choose what to do with selected posts:</label>
-                                <select name="option" id="list-options">
-                                    <option value=""></option>
-                                    <option value="delete">Delete</option>
-                                    <option value="star">Star</option>
-                                    <option value="archive">Archive</option>
+                                <select name="option" id="list-options" required>
+                                    <option></option>
+                                    <option value="publish">Publish</option>
                                     <option value="draft">Draft</option>
+                                    <option value="delete">Delete</option>
 
                                 </select>
-                                <button>GO</button>
+                                <button type="submit">GO</button>
                             </div>
 
                         </form>
                     </div>
+
+                    <div class="pagination flex center">
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
     </main>
-    <script>
-        function toggleMenu() {
-            let menuOpen = true;
-            document.querySelector(".menu-close").addEventListener('click', () => {
-                if (menuOpen) {
-
-
-                    console.log('Menu hidden');
-                    menuOpen = false;
-                    document.querySelector(".side-menu").style.display = "none"
-                    document.querySelector(".menu-toggle").style.display = "flex";
-                    document.querySelector('main').style.gridTemplateColumns = "1fr"
-                }
-            });
-            document.querySelector(".menu-toggle").addEventListener('click', () => {
-                if (!menuOpen) {
-
-                    console.log('Menu open');
-                    menuOpen = true;
-                    document.querySelector(".side-menu").style.display = 'block'
-                    document.querySelector(".menu-toggle").style.display = "none"
-                    document.querySelector('main').style.gridTemplateColumns = "2fr 8fr"
-                };
-            })
-        }
-        toggleMenu()
-    </script>
+    <div class="loader-div">
+        <div class="loader progress">
+            <div class="juice" data-percent=0%></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="../js/main.js" type="module" defer></script>
+    <script src="./dashboard.js" type="module" defer></script>
+    <script src="./blog.js" type="module" defer></script>
 </body>
 
 </html>

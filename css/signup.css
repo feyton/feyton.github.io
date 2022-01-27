@@ -167,6 +167,7 @@
     background-color: rgba(219, 215, 215, 0.753);
     margin: 5px;
     font-family: var(--Lexend);
+    width: 100%;
 }
 
 .sign-container form input::placeholder {
@@ -205,11 +206,14 @@ ul li {
     color: red;
 }
 
-.sign-container form input[type='submit'] {
+.sign-container form button {
     border: none;
     text-transform: uppercase;
     background-color: var(--light-blue);
     color: white;
+    padding: .3rem 1rem;
+    border-radius: 5px;
+    font-family: var(--Lexend);
 }
 
 .sign-container form .links {

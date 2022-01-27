@@ -1,23 +1,41 @@
+import { baseUrl, displayLoader, notifyUser } from "../js/main.js";
+
 document.addEventListener("DOMContentLoaded", (e) => {
   // Email Validation
-  let validName, validEmail, validPassword, validPasswordConfirm;
-  const validateName = (value) => {
+  let validFirstName,
+    validLastName,
+    validEmail,
+    validPassword,
+    validPasswordConfirm;
+  const validateFirstName = (value) => {
     var nameRegex = /^[a-zA-Z ]{3,}$/g;
     if (value.match(nameRegex)) {
       document.getElementById("name-valid").classList.remove("invalid");
-      validName = true;
+      validFirstName = true;
     } else {
       document.getElementById("name-valid").classList.add("invalid");
-      validName = false;
+      validFirstName = false;
+    }
+  };
+  const validateLastName = (value) => {
+    var nameRegex = /^[a-zA-Z ]{3,}$/g;
+    if (value.match(nameRegex)) {
+      document.getElementById("lastname-valid").classList.remove("invalid");
+      validLastName = true;
+    } else {
+      document.getElementById("lastname-valid").classList.add("invalid");
+      validLastName = false;
     }
   };
   const signupForm = document.querySelector("form");
   signupForm.email.addEventListener("keyup", (e) => {
-    console.log(e.target.value);
     // emailValidation(e.target.value)
   });
-  signupForm.name.addEventListener("keyup", (e) => {
-    validateName(e.target.value);
+  signupForm.firstName.addEventListener("keyup", (e) => {
+    validateFirstName(e.target.value);
+  });
+  signupForm.lastName.addEventListener("keyup", (e) => {
+    validateLastName(e.target.value);
   });
 
   signupForm.password.addEventListener("keyup", (e) => {
@@ -109,21 +127,26 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
   signupForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    if ((validEmail, validName, validPassword, validPasswordConfirm)) {
+    if (
+      (validEmail,
+      validFirstName,
+      validPassword,
+      validPasswordConfirm,
+      validLastName)
+    ) {
+      displayLoader();
       const formData = new FormData(e.target);
-      var data = {};
-      for (var [key, value] of formData.entries()) {
-        data[key] = value;
-      }
-      console.log(data);
+
+      saveUserData(formData);
     } else {
       alert("Form is invalid");
     }
   });
 
   const inputs = document.querySelectorAll("input");
-  try {
-    inputs.forEach((input) => {
+
+  inputs.forEach((input) => {
+    try {
       input.addEventListener("focus", (e) => {
         let messageDiv = e.target.getAttribute("data-message");
         document.getElementById(messageDiv).style.display = "block";
@@ -132,10 +155,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
         let messageDiv = e.target.getAttribute("data-message");
         document.getElementById(messageDiv).style.display = "none";
       });
-    });
-  } catch (error) {
-    console.warn(error);
-  }
+    } catch (error) {
+      console.warn(error);
+    }
+  });
 
   const image = document.getElementById("user-image");
   try {
@@ -151,4 +174,39 @@ document.addEventListener("DOMContentLoaded", (e) => {
   } catch (error) {
     console.warn(error);
   }
+
+  const saveUserData = (formData) => {
+    $.ajax({
+      url: baseUrl + "api/v1/accounts/signup",
+      method: "POST",
+      processData: false,
+      contentType: false,
+      data: formData,
+      success: (response) => {
+        notifyUser(
+          "Your account hase been created. You are being redirected",
+          "info"
+        );
+        setTimeout(() => {
+          window.location.pathname = "/";
+        }, 3000);
+      },
+      error: (error) => {
+        switch (error.status) {
+          case 400:
+            let data = error.responseJSON.data;
+            let ul = document.createElement("ul");
+            Object.keys(data).forEach((key) => {
+              let el = `<li>${key}: ${data[key]}</li><br>`;
+              ul.innerHTML += el;
+            });
+            notifyUser(ul, "error");
+            break;
+
+          default:
+            break;
+        }
+      },
+    });
+  };
 });

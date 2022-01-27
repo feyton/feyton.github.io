@@ -31,7 +31,8 @@
                     <li class="menu-item "><a href="./dashboard.html"><i
                                 class="fas fa-chalkboard fa-fw"></i>DASHBOARD</a></li>
                     <li class="menu-item"><a href="./blog.html"><i class="fas fa-clipboard-list fa-fw"></i>BLOG</a></li>
-                    <li class="menu-item active"><a href="./query.html"><i class="far fa-comments fa-fw"></i>QUERIES</a>
+                    <li class="menu-item active"><a href="./query.html"><i
+                                class="far fa-comments fa-fw"></i>COMMENTS</a>
                     </li>
                     <li class="menu-item"><a href="./users.html"><i class="far fa-user fa-fw"></i>USERS</a></li>
 
@@ -41,6 +42,8 @@
                 <h3>ACTIONS</h3>
                 <ul>
                     <li><a href="../index.html"><i class="fas fa-external-link-alt f-w"></i>&nbsp;MY SITE</a></li>
+                    <li><a href="../pages/profile.html"><i class="fas fa-external-link-alt f-w"></i>&nbsp;MY PROFILE</a>
+                    </li>
                     <li class="logout"><i class="fas fa-sign-out-alt fa-fw"></i>&nbsp;LOGOUT</li>
                 </ul>
             </div>
@@ -60,21 +63,21 @@
                         </form>
                     </li>
                     <li class="user">
-                        <img src="./download.png" class="profile-picture" alt="">
-                        <span>Fabrice</span>
+                        <img src="" class="profile-picture" alt="">
+                        <span class="user-name">Fabrice</span>
                     </li>
                 </ul>
             </nav>
             <div class="blog-view">
                 <div class="title-div">
-                    <h2>Queries</h2>
+                    <h2>Comments management</h2>
                 </div>
                 <div class="blog-list">
                     <div class="list-head">
                         <div>Select</div>
-                        <div>Star</div>
+                        <div>Status</div>
                         <div>Message</div>
-                        <div>Senger</div>
+                        <div>Author</div>
                         <div>Actions</div>
 
                     </div>
@@ -84,7 +87,7 @@
                                 <input type="checkbox" name="checkbox">
                             </div>
                             <div class="star">
-                                <i class="far fa-star"></i>
+                                <span class="true">True</span>
                             </div>
                             <div class="post-title">
                                 <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sunt saepe ex
@@ -108,11 +111,10 @@
                             <div class="select-action">
 
 
-                                <label for="list-options">Choose what to do with selected queries:</label>
+                                <label for="list-options">Choose what to do with selected comments:</label>
                                 <select name="option" id="list-options">
                                     <option value=""></option>
                                     <option value="delete">Delete</option>
-                                    <option value="star">Star</option>
                                     <option value="archive">Archive</option>
 
                                 </select>

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.css">
+    <link rel="stylesheet" href="../css/util.css" class="css">
     <link rel="stylesheet" href="../css/signup.css" class="css">
     <link rel="icon" href="../assets/favicon.png">
 </head>
@@ -31,7 +33,7 @@
             <p><i class="fa fa-check"></i>&nbsp;Best Support</p>
         </div>
         <div class="sign-container">
-            <form action="" method="" id="form">
+            <form action="#none" method="POST" id="form" enctype="multipart/form-data">
 
                 <h2 class="form-title">Sign Up</h2>
 
@@ -40,13 +42,29 @@
                         <i class="fas fa-user "></i>
                     </div>
                     <div class="">
-                        <input type="text" name="name" id="user-name" class="input" required placeholder="Name"
-                            minlength="3" data-message="firstname-message">
+                        <input type="text" name="firstName" id="user-firstname" class="input" required
+                            placeholder="First Name" minlength="3" data-message="firstname-message">
                     </div>
                     <div class="message-div" id="firstname-message">
                         <b>Must:</b>
                         <ul>
                             <li class="invalid" id="name-valid">Minimum 3 characters and only letters</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="input-div ">
+                    <div class="i ">
+                        <i class="fas fa-user "></i>
+                    </div>
+                    <div class="">
+                        <input type="text" name="lastName" id="user-lastname" class="input" required
+                            placeholder="Last name" minlength="3" data-message="lastname-message">
+                    </div>
+                    <div class="message-div" id="lastname-message">
+                        <b>Must:</b>
+                        <ul>
+                            <li class="invalid" id="lastname-valid">Minimum 3 characters and only letters</li>
                         </ul>
                     </div>
 
@@ -68,8 +86,8 @@
 
                 </div>
                 <div class="input-div">
-                    <input type="file" class="custom-file-input" name="profile-image" id="user-image"
-                        placeholder="Profile picture" accept="image/*" data-message="image-message">
+                    <input type="file" class="custom-file-input" name="image" id="user-image"
+                        placeholder="Profile picture" accept="image/*" data-message="image-message" required>
                     <div class="message-div">
                         <li class="valid" id="image-message">Profile picture required</li>
                     </div>
@@ -108,7 +126,8 @@
                         </ul>
                     </div>
                 </div>
-                <input type="submit" class="btn" value="Sign Up" id="form-submit">
+                <button type="submit" class="btn" id="form-submit">Sign Up</button>
+                <!-- <input type="submit" class="btn" value="Sign Up" id="form-submit"> -->
                 <div class="links">
                     <a href="../index.html">Login Here</a>
                 </div>
@@ -121,7 +140,7 @@
                         <h3></h3>
                     </div>
                     <div class="social">
-                        <a href="#facebook"><i class="fab fa-facebook"></i>&nbsp;Facebook</a>
+                        <a href="#facebook" class="facebook-login"><i class="fab fa-facebook"></i>&nbsp;Facebook</a>
                         <a href="#facebook"><i class="fab fa-google"></i>&nbsp;Google</a>
                     </div>
                 </div>
@@ -131,7 +150,15 @@
             </form>
         </div>
     </div>
-    <script src="../js/signup.js"></script>
+    <div class="loader-div">
+        <div class="loader progress">
+            <div class="juice" data-percent=0%></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="../js/main.js" type="module" defer></script>
+    <script src="../js/signup.js" defer type="module"></script>
 </body>
 
 </html>
