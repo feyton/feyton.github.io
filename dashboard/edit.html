@@ -34,7 +34,7 @@
                                 class="fas fa-chalkboard fa-fw"></i>DASHBOARD</a></li>
                     <li class="menu-item active"><a href="./blog.html"><i
                                 class="fas fa-clipboard-list fa-fw"></i>BLOG</a></li>
-                    <li class="menu-item"><a href="#"><i class="far fa-comments fa-fw"></i>COMMENTS</a></li>
+                    <li class="menu-item"><a href="#"><i class="far fa-comments fa-fw"></i>QUERIES</a></li>
                     <li class="menu-item"><a href="#"><i class="far fa-user fa-fw"></i>USERS</a></li>
                     <!-- <li class="menu-item">PROFILE</li> -->
                     <!-- <li class="menu-item"></li> -->
@@ -44,8 +44,6 @@
                 <h3>ACTIONS</h3>
                 <ul>
                     <li><a href="../index.html"><i class="fas fa-external-link-alt f-w"></i>&nbsp;MY SITE</a></li>
-                    <li><a href="../pages/profile.html"><i class="fas fa-external-link-alt f-w"></i>&nbsp;MY PROFILE</a>
-                    </li>
                     <li class="logout"><i class="fas fa-sign-out-alt fa-fw"></i>&nbsp;LOGOUT</li>
                 </ul>
             </div>
@@ -76,7 +74,7 @@
                 </div>
                 <div class="form-div">
                     <div class="add-card">
-                        <form action="#none" id="post-create-form" method="POST" enctype="multipart/form-data">
+                        <form action="#none" id="post-edit-form" method="POST" enctype="multipart/form-data">
                             <div class="input-group">
                                 <label for="title">Post Title</label>
                                 <input type="text" placeholder="title" name="title" id="title" class="w-100" required
@@ -96,13 +94,6 @@
                                 </select>
                             </div>
 
-
-                            <div class="input-group">
-                                <label for="post-date">Post Image</label>
-                                <input type="file" placeholder="title" name="image" id="post-image"
-                                    class="custom-file-input" accept="image/*">
-                            </div>
-
                             <div class="input-group editor-section">
                                 <label for="post-content">Add content here</label>
                                 <hr>
@@ -114,7 +105,6 @@
                                 <select name="published" id="status" required>
                                     <option value="true">Published</option>
                                     <option value="false">Draft</option>
-
                                 </select>
                             </div>
                             <input type="submit" value="Create" class="btn btn-submit">
@@ -135,6 +125,7 @@
 
     <script src="../js/main.js" type="module" defer></script>
     <script src="./dashboard.js" type="module" defer></script>
+    <script src="./edit.js" type="module" defer></script>
     <script>
 
     </script>

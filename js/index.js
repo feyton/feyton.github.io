@@ -7,6 +7,7 @@ const loadIndexBlogs = () => {
   $.ajax({
     url: baseUrl + "api/v1/blogs",
     success: (response) => {
+      console.log(response)
       let posts = response.data;
       if (posts.length == 0) {
       } else {
@@ -40,7 +41,7 @@ export const renderBlogList = (posts, postDiv, detailPage) => {
     let postElement = `
           <div class="blog-card">
           <div class="blog-image">
-              <img src="${baseUrl + post.photoURL}" alt="">
+              <img src="${post.photoURL}" alt="">
               <div class="date-info">
                   <h2>${postDate.getDate()}-${
       postDate.toString().split(" ")[1]
@@ -76,9 +77,12 @@ export const loadBlogsForBlogger = (page, limit) => {
     url: baseUrl + `api/v1/blogs?page=${pageQ}&limit=${limitQ}`,
     success: (data) => {
       let { posts, ...pagedata } = data.data;
-      let postDiv = document.getElementById("blog-div");
-      renderBlogList(posts, postDiv, "./detail.html");
-      handlePagination(pagedata);
+      if (posts.length == 0) {
+      } else {
+        let postDiv = document.getElementById("blog-div");
+        renderBlogList(posts, postDiv, "./detail.html");
+        handlePagination(pagedata);
+      }
     },
   });
 };

@@ -1,4 +1,4 @@
-import { baseUrl, hideModals, notifyUser } from "./main.js";
+import { baseUrl, handleAjaxError, hideModals, notifyUser } from "./main.js";
 
 const updateBtn = document.querySelector(".btn-update-profile");
 const updateDiv = document.querySelector(".update-div");
@@ -102,7 +102,6 @@ form.addEventListener("submit", (e) => {
       loadUserProfile(data.data);
       populateForm(data.data);
     },
-    error: (error) => {},
   });
 });
 
@@ -111,6 +110,7 @@ document
   .addEventListener("submit", (e) => {
     e.preventDefault();
     let formData = new FormData(e.target);
+    console.log(formData);
     $.ajax({
       url: baseUrl + "api/v1/accounts/profile/" + user.id,
       method: "PUT",
@@ -135,6 +135,9 @@ document
           location.reload();
         }, 2000);
       },
-      error: (error) => {},
+      error: (error) => {
+        handleAjaxError(error);
+      },
+      timeout: 20000,
     });
   });

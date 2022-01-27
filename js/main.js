@@ -10,7 +10,7 @@ export const notifyUser = (message, type = "success", duration = 3000) => {
 export const baseUrl = "http://127.0.0.1:3500/";
 
 $.ajaxSetup({
-  timeout: 6000, //Time in milliseconds
+  timeout: 8000, //Time in milliseconds
 });
 $(document).ajaxStart(() => {
   displayLoader();
@@ -18,7 +18,6 @@ $(document).ajaxStart(() => {
 $(document).ajaxComplete(() => {
   displayLoader("hide");
 });
-$(document).ajax;
 $(document).ajaxError((error) => {
   switch (error.status) {
     case 500:
@@ -36,10 +35,43 @@ $(document).ajaxError((error) => {
     case 409:
       notifyUser(errData.message, "error");
       break;
+    case 0:
+      notifyUser("The request has been timed out! Try again");
+      break;
     default:
       break;
   }
 });
+
+export const handleAjaxError = (error) => {
+  let errData = error.responseJSON
+  switch (error.status) {
+    case 500:
+      notifyUser("Something happened on our end", "error");
+      break;
+    case 400:
+      let data = error.responseJSON.data;
+      let ul = document.createElement("ul");
+      Object.keys(data).forEach((key) => {
+        let el = `<li>${key}: ${data[key]}</li><br>`;
+        ul.innerHTML += el;
+      });
+      notifyUser(ul, "warning");
+      break;
+    case 409:
+      notifyUser(errData.message, "error");
+      break;
+    case 404:
+      notifyUser(errData.message, "error");
+      break;
+    case 0:
+      notifyUser("The request has been timed out! Try again", 'error');
+      break;
+    default:
+      notifyUser("Something went wrong! Try again", 'error');
+      break;
+  }
+};
 
 export const renewToken = () => {
   $.ajax({
@@ -48,8 +80,7 @@ export const renewToken = () => {
     success: (data) => {
       console.log(data);
     },
-    error: (error) => {
-    },
+    error: (error) => {},
   });
 };
 const loginUser = (data) => {
@@ -58,7 +89,6 @@ const loginUser = (data) => {
     method: "POST",
     data: data,
     success: (response) => {
-
       const user = {
         id: response.data._id,
         name: response.data.name,
@@ -281,7 +311,7 @@ const handleUserLoggedIn = (user) => {
     el.style.display = "inherit";
   });
   document.querySelectorAll(".profile-picture").forEach((el) => {
-    el.src = baseUrl + user.image;
+    el.src = user.image;
   });
   document.querySelectorAll(".logged-out").forEach((el) => {
     el.style.display = "none";
@@ -301,11 +331,21 @@ const logoutButtons = document.querySelectorAll(".logout");
 logoutButtons.forEach((btn) => {
   try {
     btn.addEventListener("click", () => {
-      const proceed = confirm("You will be logged out now?");
-      if (proceed) {
-        logoutUser();
-      } else {
-      }
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will lose access to protected resources.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Log me out",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.value) {
+          logoutUser();
+        } else {
+          Swal.fire("Cancelled", "Your session is still active", "info");
+        }
+      });
     });
   } catch (error) {
     console.warn(error);

@@ -76,10 +76,11 @@
                     <div class="comments">
                         <h3>Add a comment</h3>
                         <div class="comment-form logged-in">
-                            <form action="#comment">
+                            <form action="#comment" id="comment-form">
                                 <textarea name="body" id="comment-body" cols="30" rows="3"
-                                    placeholder="Type your comment here" required></textarea>
-                                <input type="submit" value="Send" class="disabled">
+                                    placeholder="Type your comment here" required minlength="10"
+                                    maxlength="200"></textarea>
+                                <input type="submit" value="Send">
                             </form>
                         </div>
                         <div class="comment-login logged-out">

@@ -1,61 +1,37 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@8/src/sweetalert2.js";
-import { baseUrl, notifyUser } from "../js/main.js";
+import { baseUrl, handleAjaxError, notifyUser } from "../js/main.js";
 const token = localStorage.getItem("token");
 
-const getBlogs = (page, limit) => {
+const getBlogsAdmin = (page, limit) => {
   const pageQ = page || 1;
   const limitQ = limit || 5;
   $.ajax({
-    url: baseUrl + `api/v1/blogs?page=${pageQ}&limit=${limitQ}`,
+    url: baseUrl + `api/v1/blogs/admin?page=${pageQ}&limit=${limitQ}`,
     method: "GET",
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader("Authorization", "Bearer " + token);
+    },
     success: (data) => {
       let { posts, ...pagedata } = data.data;
-      let postDiv = document.getElementById("post-items");
-      try {
-        postDiv.innerHTML = "";
-        posts.forEach((post) => {
-          let date = new Date(post.date);
-          let postEl = `
-            <div class="item" data-ref="${post._id}">
-            <div class="checkbox">
-                <input type="checkbox" name="checkbox">
-            </div>
-            <div class="star">
-                <i class="far fa-star"></i>
-            </div>
-            <div class="post-title">
-                <h6>${post.title}</h6>
-            </div>
-            <div class="post-date">
-                <span>${date.toDateString()}</span>
-            </div>
-            <div class="post-actions">
-                <a href="../pages/detail.html" data-ref="${
-                  post._id
-                }" class="btn-more"><i class="fas fa-eye"></i></a>
-                <a href="#kd" data-ref="${
-                  post._id
-                }" class="btn-edit"><i class="fas fa-edit"></i></a>
-                <a href="#kd" data-ref="${
-                  post._id
-                }" class="confirm delete"><i class="fas fa-trash"></i></a>
 
-            </div>
-        </div>
-            `;
-          postDiv.innerHTML += postEl;
-        });
-        handlePagination(pagedata);
+      try {
+        if (posts.length == 0) {
+        } else {
+          renderResult(posts);
+          handlePagination(pagedata);
+        }
       } catch (error) {
         console.warn(error);
       }
     },
-    error: (error) => {},
+    error: (error) => {
+      notifyUser(error.responseJSON.message);
+    },
   });
 };
 
 if (window.location.pathname == "/dashboard/blog.html") {
-  getBlogs();
+  getBlogsAdmin();
   $("body").on("click", ".delete", (e) => {
     e.preventDefault();
     let ref = e.target.getAttribute("data-ref");
@@ -77,15 +53,14 @@ if (window.location.pathname == "/dashboard/blog.html") {
           },
           success: (data) => {
             notifyUser("The post has been deleted");
-            getBlogs();
+            getBlogsAdmin();
           },
           error: (error) => {
-            notifyUser(error.responseJSON.message, "error");
+            handleAjaxError(error);
           },
         });
-        notifyUser("The post is deleted", "info");
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire("Cancelled", "The post is left untouched", "error");
+        Swal.fire("Cancelled", "The post is left untouched", "info");
       }
     });
   });
@@ -112,9 +87,14 @@ if (window.location.pathname == "/dashboard/blog.html") {
 
 document.addEventListener("click", (e) => {
   if (e.target.matches(".btn-edit")) {
-    notifyUser("Details loaded");
     const ref = e.target.getAttribute("data-ref");
-    localStorage.setItem("postEdit", ref);
+    localStorage.setItem("activeEdit", ref);
+  } else if (e.target.matches(".btn-more")) {
+    const ref = e.target.getAttribute("data-ref");
+    localStorage.setItem("postID", ref);
+    if (ref == "") {
+      e.preventDefault();
+    }
   }
 });
 
@@ -146,33 +126,35 @@ const renderResult = (posts) => {
   posts.forEach((post) => {
     let date = new Date(post.date);
     let postEl = `
-        <div class="item" data-ref="${post._id}">
-        <div class="checkbox">
-            <input type="checkbox" name="checkbox">
-        </div>
-        <div class="star">
-            <i class="far fa-star"></i>
-        </div>
-        <div class="post-title">
-            <h6>${post.title}</h6>
-        </div>
-        <div class="post-date">
-            <span>${date.toDateString()}</span>
-        </div>
-        <div class="post-actions">
-            <a href="../pages/detail.html" data-ref="${
-              post._id
-            }" class="btn-more"><i class="fas fa-eye"></i></a>
-            <a href="#kd" data-ref="${
-              post._id
-            }" class="btn-edit"><i class="fas fa-edit"></i></a>
-            <a href="#kd" data-ref="${
-              post._id
-            }" class="confirm delete"><i class="fas fa-trash"></i></a>
+      <div class="item" data-ref="${post._id}">
+      <div class="checkbox">
+          <input type="checkbox" name="checkbox">
+      </div>
+      <div class="star">
+          <h6 class="capitalize tl ${post.published}">${post.published}</h6>
+      </div>
+      <div class="post-title">
+          <h6>${post.title}</h6>
+      </div>
+      <div class="post-date">
+          <span>${date
+            .toLocaleDateString("de-DE")
+            .replaceAll(".", "-", 3)}</span>
+      </div>
+      <div class="post-actions">
+          <a href="../pages/detail.html" data-ref="${
+            post._id
+          }" class="btn-more"><i class="fas fa-eye"></i></a>
+          <a href="./edit.html" data-ref="${
+            post._id
+          }" class="btn-edit"><i class="fas fa-edit"></i></a>
+          <a href="#kd" data-ref="${
+            post._id
+          }" class="confirm delete"><i class="fas fa-trash"></i></a>
 
-        </div>
-    </div>
-        `;
+      </div>
+  </div>
+      `;
     postDiv.innerHTML += postEl;
   });
 };
@@ -231,7 +213,7 @@ const executeAdminAction = (action, idList) => {
     data: { action: action, idList: list },
     success: (response) => {
       notifyUser("Your action has been successfull");
-      getBlogs();
+      getBlogsAdmin();
     },
     error: (error) => {
       notifyUser(error.responseJSON.message);

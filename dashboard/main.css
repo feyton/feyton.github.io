@@ -400,10 +400,30 @@ main .blog-list .list-items {
 
 main .blog-list .list-head, main .blog-list .list-items .item {
     display: grid;
-    grid-template-columns: 1fr 1fr 6fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 4fr 2fr 2fr;
     border-bottom: 1px solid grey;
     padding: 5px;
     font-family: var(--head-font);
+}
+main .blog-list .true {
+    font-weight: bold;
+    color: #00865a;
+}
+main .blog-list .true::before{
+    content: "\f560";
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    margin-right: 3px;
+    color: green;
+}
+main .blog-list .false {
+    font-weight: bold;
+    color: #012049; 
+}
+main .blog-list .false::before {
+    content: "\f28d";
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    margin-right: 3px;
+    color: red;
 }
 
 main .blog-list .list-head {
