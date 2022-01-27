@@ -1,4 +1,11 @@
-import { baseUrl, handleAjaxError, hideModals, notifyUser } from "./main.js";
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@8/src/sweetalert2.js";
+import {
+  baseUrl,
+  handleAjaxError,
+  hideModals,
+  logoutUser,
+  notifyUser,
+} from "./main.js";
 
 const updateBtn = document.querySelector(".btn-update-profile");
 const updateDiv = document.querySelector(".update-div");
@@ -7,9 +14,11 @@ updateBtn.addEventListener("click", (e) => {
   updateDiv.classList.toggle("d-none");
 });
 
-document.querySelector("#hideModal").addEventListener("click", (e) => {
+document.querySelector(".hideModal").addEventListener("click", (e) => {
   e.preventDefault();
-  document.querySelector(".modal").style.display = "none";
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.style.display = "none";
+  });
 });
 document.querySelector(".update-picture").addEventListener("click", (e) => {
   e.preventDefault();
@@ -141,3 +150,50 @@ document
       timeout: 20000,
     });
   });
+
+$(".btn-delete-account").click((e) => {
+  e.preventDefault;
+  $("#delete-account").css("display", "flex");
+});
+
+$(".hideModalDelete").click((e) => {
+  $("#delete-account").css("display", "none");
+});
+
+$(".delete-account-form").on("submit", (e) => {
+  e.preventDefault();
+  let data = {};
+  data["password"] = e.target.password.value;
+  console.log(data)
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "No, cancel!",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        method: "DELETE",
+        data: data,
+        url: baseUrl + "api/v1/accounts/" + user.id,
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader("Authorization", "Bearer " + token);
+        },
+        success: (data) => {
+          notifyUser("Your account has been deleted");
+          logoutUser();
+        },
+        error: (error) => {
+          console.log(error)
+          handleAjaxError(error);
+        },
+      });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      $(".modal").hide();
+      Swal.fire("Cancelled", "Your account is still active", "info");
+    }
+  });
+});

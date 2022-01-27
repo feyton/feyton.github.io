@@ -78,8 +78,11 @@
                     <div class="user-info-render ">
                         <div class="loader-for-div center"><i class="fas fa-spinner fa-spin"></i></div>
                     </div>
+                    <div class="button-group">
+                        <button class="btn btn-update-profile">Update Profile</button>
+                        <button class="btn btn-delete-account">Delete account</button>
+                    </div>
 
-                    <button class="btn btn-update-profile">Update Profile</button>
                 </div>
 
 
@@ -148,20 +151,33 @@
 
         <form action="#none" class="update-profile-picture">
             <h2>Change Picture</h2>
-            <input type="file" class="custom-file-input" name="image" id="user-image"
-                placeholder="Profile picture" required accept="image/*">
+            <input type="file" class="custom-file-input" name="image" id="user-image" placeholder="Profile picture"
+                required accept="image/*">
             <div class="image-div">
             </div>
             <div class="button-group">
                 <input type="submit" value="Upload" class="btn btn-secondary">
 
 
-                <button class="btn btn-primary" id="hideModal">CANCEL</button>
+                <button class="btn btn-primary hideModal" id="hideModal">CANCEL</button>
             </div>
 
         </form>
 
     </div>
+    <div class="modal d-none" id="delete-account">
+        <form action="#none" class="delete-account-form">
+            <h2>Delete account</h2>
+            <input type="password" placeholder="Password" name="password" required>
+
+            <div class="button-group">
+                <input type="submit" value="Delete" class="btn btn-secondary">
+                <button class="btn btn-primary hideModalDelete">CANCEL</button>
+            </div>
+        </form>
+    </div>
+
+
 
     <!-- MODAL -->
     <div class="loader-div">

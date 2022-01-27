@@ -7,7 +7,7 @@ export const notifyUser = (message, type = "success", duration = 3000) => {
     type: type,
   });
 };
-export const baseUrl = "http://127.0.0.1:3500/";
+export const baseUrl = "https://atlp-backend-staging.herokuapp.com/";
 
 $.ajaxSetup({
   timeout: 8000, //Time in milliseconds
@@ -44,7 +44,7 @@ $(document).ajaxError((error) => {
 });
 
 export const handleAjaxError = (error) => {
-  let errData = error.responseJSON
+  let errData = error.responseJSON;
   switch (error.status) {
     case 500:
       notifyUser("Something happened on our end", "error");
@@ -65,10 +65,10 @@ export const handleAjaxError = (error) => {
       notifyUser(errData.message, "error");
       break;
     case 0:
-      notifyUser("The request has been timed out! Try again", 'error');
+      notifyUser("The request has been timed out! Try again", "error");
       break;
     default:
-      notifyUser("Something went wrong! Try again", 'error');
+      notifyUser("Something went wrong! Try again", "error");
       break;
   }
 };
@@ -117,7 +117,7 @@ const loginUser = (data) => {
   });
 };
 
-const logoutUser = () => {
+export const logoutUser = () => {
   $.ajax({
     method: "POST",
     data: {},
