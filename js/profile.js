@@ -1,4 +1,4 @@
-import { baseUrl, notifyUser } from "./main.js";
+import { baseUrl, hideModals, notifyUser } from "./main.js";
 
 const updateBtn = document.querySelector(".btn-update-profile");
 const updateDiv = document.querySelector(".update-div");
@@ -8,7 +8,6 @@ updateBtn.addEventListener("click", (e) => {
 });
 
 document.querySelector("#hideModal").addEventListener("click", (e) => {
-  console.log("clicked");
   e.preventDefault();
   document.querySelector(".modal").style.display = "none";
 });
@@ -56,7 +55,6 @@ const user = JSON.parse(localStorage.getItem("user"));
 const token = localStorage.getItem("token");
 
 if (user && token) {
-  console.log("Logged in");
   // window.history.pushState("", "ATLP| Profile", "/accounts/profile");
   $.ajax({
     url: baseUrl + "api/v1/accounts/profile/" + user.id,
@@ -72,7 +70,6 @@ if (user && token) {
     },
   });
 } else {
-  console.log("Profile loaded");
   notifyUser("Login to view this page", "error", 4000);
   setTimeout(() => {
     location.pathname = "/";
@@ -132,7 +129,11 @@ document
           name: response.data.name,
           image: response.data.image,
         };
+        hideModals();
         localStorage.setItem("user", JSON.stringify(userData));
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
       },
       error: (error) => {},
     });

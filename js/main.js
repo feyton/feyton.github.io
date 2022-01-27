@@ -26,7 +26,6 @@ $(document).ajaxError((error) => {
       break;
     case 400:
       let data = error.responseJSON.data;
-      console.log(data);
       let ul = document.createElement("ul");
       Object.keys(data).forEach((key) => {
         let el = `<li>${key}: ${data[key]}</li><br>`;
@@ -50,7 +49,6 @@ export const renewToken = () => {
       console.log(data);
     },
     error: (error) => {
-      console.log(error.responseJSON);
     },
   });
 };
@@ -60,7 +58,6 @@ const loginUser = (data) => {
     method: "POST",
     data: data,
     success: (response) => {
-      console.log(response);
 
       const user = {
         id: response.data._id,
@@ -96,7 +93,6 @@ const logoutUser = () => {
     data: {},
     url: baseUrl + "api/v1/accounts/logout",
     success: (response) => {
-      console.log(response);
       notifyUser("You are logged out");
       setTimeout(() => {
         window.location.pathname = "/";
@@ -126,7 +122,6 @@ const logoutUser = () => {
 
 window.addEventListener("load", () => {
   const authState = localStorage.getItem("authenticated");
-  console.log(authState);
   if (authState && authState == "true") {
     let user = localStorage.getItem("user");
     handleUserLoggedIn(JSON.parse(user));
@@ -177,7 +172,6 @@ modalLinks.forEach((link) => {
     const modal = document.getElementById(target);
     modal.style.display = "block";
     document.querySelector("body").style.position = "fixed";
-    console.log(target);
   });
 });
 export const hideModals = () => {
@@ -192,7 +186,6 @@ const closeButtons = document.querySelectorAll(".modal-close");
 closeButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("Clikcked");
     hideModals();
   });
 });
@@ -272,7 +265,6 @@ const checkLoginForm = () => {
       const email = form.email.value;
       const password = form.password.value;
       if (!email || !password) {
-        console.log("empty");
       } else {
         const data = { email: email, password: password };
         loginUser(data);

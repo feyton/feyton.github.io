@@ -11,10 +11,11 @@ const getBlogs = (page, limit) => {
     success: (data) => {
       let { posts, ...pagedata } = data.data;
       let postDiv = document.getElementById("post-items");
-      postDiv.innerHTML = "";
-      posts.forEach((post) => {
-        let date = new Date(post.date);
-        let postEl = `
+      try {
+        postDiv.innerHTML = "";
+        posts.forEach((post) => {
+          let date = new Date(post.date);
+          let postEl = `
             <div class="item" data-ref="${post._id}">
             <div class="checkbox">
                 <input type="checkbox" name="checkbox">
@@ -42,57 +43,77 @@ const getBlogs = (page, limit) => {
             </div>
         </div>
             `;
-        postDiv.innerHTML += postEl;
-      });
-      handlePagination(pagedata);
+          postDiv.innerHTML += postEl;
+        });
+        handlePagination(pagedata);
+      } catch (error) {
+        console.warn(error);
+      }
     },
-    error: (error) => {
-      console.log(error);
-    },
+    error: (error) => {},
   });
 };
-getBlogs();
 
-$("body").on("click", ".delete", (e) => {
-  e.preventDefault();
-  let ref = e.target.getAttribute("data-ref");
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "No, cancel!",
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.value) {
-      console.log(ref);
-      $.ajax({
-        method: "DELETE",
-        url: baseUrl + "api/v1/blogs/" + ref,
-        beforeSend: (xhr) => {
-          xhr.setRequestHeader("Authorization", "Bearer " + token);
-        },
-        success: (data) => {
-          notifyUser("The post has been deleted");
-          getBlogs();
-        },
-        error: (error) => {
-          notifyUser(error.responseJSON.message, "error");
-        },
-      });
-      notifyUser("The post is deleted", "info");
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-      Swal.fire("Cancelled", "The post is left untouched", "error");
+if (window.location.pathname == "/dashboard/blog.html") {
+  getBlogs();
+  $("body").on("click", ".delete", (e) => {
+    e.preventDefault();
+    let ref = e.target.getAttribute("data-ref");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          method: "DELETE",
+          url: baseUrl + "api/v1/blogs/" + ref,
+          beforeSend: (xhr) => {
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+          },
+          success: (data) => {
+            notifyUser("The post has been deleted");
+            getBlogs();
+          },
+          error: (error) => {
+            notifyUser(error.responseJSON.message, "error");
+          },
+        });
+        notifyUser("The post is deleted", "info");
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelled", "The post is left untouched", "error");
+      }
+    });
+  });
+  let actionForm = document.querySelector(".post-mass-action");
+  actionForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let action = actionForm.option.value;
+    let allIds = [];
+    let selected = document.querySelectorAll("input[type='checkbox']");
+
+    selected.forEach((box) => {
+      let dataRef = box.parentElement.parentElement.getAttribute("data-ref");
+      if (box.checked) {
+        allIds.push(dataRef);
+      }
+    });
+    if (allIds.length > 0) {
+      executeAdminAction(action, allIds);
+    } else {
+      notifyUser("Select multiple elements to proceed", "error");
     }
   });
-});
+}
 
 document.addEventListener("click", (e) => {
   if (e.target.matches(".btn-edit")) {
     notifyUser("Details loaded");
     const ref = e.target.getAttribute("data-ref");
-    console.log(ref);
     localStorage.setItem("postEdit", ref);
   }
 });
@@ -101,7 +122,6 @@ const searchResult = (term) => {
   $.ajax({
     url: baseUrl + `api/v1/blogs/search?q=${term}`,
     success: (response) => {
-      console.log(response);
       if (response.data.length > 0) {
         $(".page-title").html(`Result for: <b>${term}</b>`);
         renderResult(response.data);
@@ -161,7 +181,6 @@ $(".search-form").on("submit", (e) => {
   e.preventDefault();
   let form = e.target;
   let search = form.search.value;
-  console.log(search);
   if (search == "") {
     notifyUser("The field can't be empty");
   } else {
@@ -169,7 +188,7 @@ $(".search-form").on("submit", (e) => {
   }
 });
 
-const handlePagination = (pageData) => {
+export const handlePagination = (pageData) => {
   let paginationDiv = document.querySelector(".pagination");
   paginationDiv.innerHTML = "";
   const page = pageData.page;
@@ -201,18 +220,21 @@ document.addEventListener("click", (e) => {
   }
 });
 
-let actionForm = document.querySelector(".post-mass-action");
-actionForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  let action = actionForm.option.value;
-  let allIds = [];
-  let selected = document.querySelectorAll("input[type='checkbox']");
-
-  selected.forEach((box) => {
-    let dataRef = box.parentElement.parentElement.getAttribute("data-ref");
-    if (box.checked) {
-      allIds.push(dataRef);
-    }
+const executeAdminAction = (action, idList) => {
+  let list = JSON.stringify(idList);
+  $.ajax({
+    method: "POST",
+    url: baseUrl + "api/v1/blogs/admin-actions",
+    beforeSend: (xhr) => {
+      xhr.setRequestHeader("Authorization", "Bearer " + token);
+    },
+    data: { action: action, idList: list },
+    success: (response) => {
+      notifyUser("Your action has been successfull");
+      getBlogs();
+    },
+    error: (error) => {
+      notifyUser(error.responseJSON.message);
+    },
   });
-  console.log(allIds);
-});
+};

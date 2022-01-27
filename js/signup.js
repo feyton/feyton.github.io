@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   };
   const signupForm = document.querySelector("form");
   signupForm.email.addEventListener("keyup", (e) => {
-    console.log(e.target.value);
     // emailValidation(e.target.value)
   });
   signupForm.firstName.addEventListener("keyup", (e) => {
@@ -184,7 +183,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
       contentType: false,
       data: formData,
       success: (response) => {
-        console.log(response);
         notifyUser(
           "Your account hase been created. You are being redirected",
           "info"
@@ -197,7 +195,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
         switch (error.status) {
           case 400:
             let data = error.responseJSON.data;
-            console.log(data);
             let ul = document.createElement("ul");
             Object.keys(data).forEach((key) => {
               let el = `<li>${key}: ${data[key]}</li><br>`;

@@ -94,12 +94,11 @@
                         <form action="" class="post-mass-action">
                             <div class="select-action">
                                 <label for="list-options">Choose what to do with selected posts:</label>
-                                <select name="option" id="list-options">
-                                    <option value=""></option>
-                                    <option value="delete">Delete</option>
-                                    <option value="star">Star</option>
-                                    <option value="archive">Archive</option>
+                                <select name="option" id="list-options" required>
+                                    <option></option>
+                                    <option value="publish">Publish</option>
                                     <option value="draft">Draft</option>
+                                    <option value="delete">Delete</option>
 
                                 </select>
                                 <button type="submit">GO</button>
