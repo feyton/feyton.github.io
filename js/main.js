@@ -92,7 +92,6 @@ export const handleAjaxError = (error) => {
   }
 };
 
-
 const loginUser = (data) => {
   $.ajax({
     url: baseUrl + "api/v1/accounts/login",
