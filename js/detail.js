@@ -1,4 +1,4 @@
-import { baseUrl, notifyUser } from "./main.js";
+import { baseUrl, handleAjaxError, notifyUser } from "./main.js";
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -28,11 +28,14 @@ if (!postID) {
   $.ajax({
     url: baseUrl + "api/v1/blogs/" + postID,
     success: (response) => {
+      console.log(response)
       let post = response.data.blog;
       renderPost(post);
       renderComment(response.data.comments);
     },
-    error: (error) => {},
+    error: (error) => {
+      handleAjaxError(error);
+    },
   });
 }
 
@@ -116,32 +119,17 @@ const saveComment = () => {
           xhr.setRequestHeader("Authorization", "Bearer " + token);
         },
         success: (response) => {
-          console.log(response.data);
           notifyUser("Your comment has been received.");
           displayComment(response.data);
+          form.reset();
         },
         error: (error) => {
-          switch (error.status) {
-            case 401:
-              notifyUser("Unauthorized", "error");
-              break;
-            case 400:
-              let data = error.responseJSON.data;
-              let ul = document.createElement("ul");
-              Object.keys(data).forEach((key) => {
-                let el = `<li>${key}: ${data[key]}</li>`;
-                ul.innerHTML += el;
-              });
-              notifyUser(ul, "error");
-            default:
-              break;
-          }
+          handleAjaxError(error);
         },
       });
     }
   });
 };
-console.log(user);
 saveComment();
 const displayComment = (comment) => {
   let commentDiv = document.querySelector("#comment-div");
@@ -153,7 +141,8 @@ const displayComment = (comment) => {
   <p class="comment-content">${comment.body}</p>
   <div class="comment-footer">
       <span class="comment-date">${new Date(comment.date).toLocaleDateString(
-        "de-DE"
+        "en-US",
+        { day: "2-digit", month: "short", year: "numeric" }
       )}</span> <span><i
               class="fas fa-star fa-lg"></i>&nbsp;${comment.likes}</span>
   </div>

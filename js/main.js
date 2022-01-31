@@ -9,6 +9,25 @@ export const notifyUser = (message, type = "success", duration = 3000) => {
 };
 export const baseUrl = "https://atlp-backend-staging.herokuapp.com/";
 
+export const setWithExpiry = (key, value, time) => {
+  const now = new Date();
+  const item = {
+    value: value,
+    expiry: now.getTime() + time,
+  };
+  localStorage.setItem(key, JSON.stringify(item));
+};
+export const getItemWithEpiry = (key) => {
+  const item = localStorage.getItem(key);
+  if (!item) return null;
+  const object = JSON.parse(item);
+  const now = new Date();
+  if (now.getTime() > object.expiry) {
+    localStorage.removeItem(key);
+    return null;
+  }
+  return object.value;
+};
 $.ajaxSetup({
   timeout: 8000, //Time in milliseconds
 });
@@ -73,16 +92,7 @@ export const handleAjaxError = (error) => {
   }
 };
 
-export const renewToken = () => {
-  $.ajax({
-    url: baseUrl + "api/v1/refresh",
-    method: "GET",
-    success: (data) => {
-      console.log(data);
-    },
-    error: (error) => {},
-  });
-};
+
 const loginUser = (data) => {
   $.ajax({
     url: baseUrl + "api/v1/accounts/login",
@@ -349,5 +359,42 @@ logoutButtons.forEach((btn) => {
     });
   } catch (error) {
     console.warn(error);
+  }
+});
+
+$(".password-reset").click((e) => {
+  e.preventDefault();
+  $(".login-modal-form-div").html(
+    `
+    <form action="#reset" method="POST" id="password-reset-form">
+    <input type="email" placeholder="E-mail" name="email" id="user-email" required>
+
+    <button type="submit" class="btn btn-primary ">Reset Password</button>
+    </form>
+    `
+  );
+});
+
+$(document).on("submit", "#password-reset-form", async (e) => {
+  e.preventDefault();
+  const email = e.target.email.value;
+
+
+  if (email !== "") {
+    let data = { email: email };
+    $.ajax({
+      url: baseUrl + "api/v1/accounts/password-reset",
+      method: "POST",
+      data: data,
+      success: (response) => {
+        notifyUser(response.data.message, "success");
+        setTimeout(() => {
+          location.reload();
+        }, 3000);
+      },
+      error: (error) => {
+        handleAjaxError(error);
+      },
+    });
   }
 });

@@ -7,7 +7,7 @@ const loadIndexBlogs = () => {
   $.ajax({
     url: baseUrl + "api/v1/blogs",
     success: (response) => {
-      console.log(response)
+    
       let posts = response.data;
       if (posts.length == 0) {
       } else {

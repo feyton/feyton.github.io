@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="main.css" class="css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@8/dist/sweetalert2.css">
+    <link rel="stylesheet" href="../css/util.css">
+    <link rel="stylesheet" href="./main.css" class="css">
 </head>
 
 <body class="logged-in">
@@ -110,38 +112,17 @@
                             <i class="fa fa-plus"></i>
                         </div>
                         <div class="task-list">
-                            <div class="task-div">
-                                <span><input type="checkbox" name="complete task" id=""></span>
-                                <span>Create a new branch for the backend</span>
-                                <span>
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-trash"></i>
-                                </span>
+
+                            <div class="center title">
+                                <br><br>
+                                <i class="fa fa-spinner fa-spin fa-lg"></i>
+                                <br><br>
+                                <h2 class="font-primary">No tasks available for now</h2>
+                                <br><br>
                             </div>
-                            <div class="task-div">
-                                <span><input type="checkbox" name="complete task" id=""></span>
-                                <span>Create a new branch for the backend</span>
-                                <span>
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-trash"></i>
-                                </span>
-                            </div>
-                            <div class="task-div">
-                                <span><input type="checkbox" name="complete task" id=""></span>
-                                <span>Create a new branch for the backend</span>
-                                <span>
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-trash"></i>
-                                </span>
-                            </div>
-                            <div class="task-div">
-                                <span><input type="checkbox" name="complete task" id=""></span>
-                                <span>Create a new branch for the backend</span>
-                                <span>
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-trash delete"></i>
-                                </span>
-                            </div>
+                            <hr>
+
+
 
                         </div>
 
@@ -172,83 +153,27 @@
             <div class="modal-close">
                 <i class="fa fa-close"></i>
             </div>
-            <form action="#none">
+            <form action="#none" class="add-task-form">
                 <h2>New Task</h2>
                 <hr>
                 <div class="input-group">
                     <label for="taskActivity">Activity</label>
-                    <textarea name="taskActivity" id="taskActivity" cols="30" rows="3"
-                        placeholder="What are you planning to do?"></textarea>
+                    <textarea name="body" id="taskActivity" required minlength="2" cols="30" rows="3"
+                        placeholder="What are you planning to do?" maxlength="300"></textarea>
                 </div>
                 <button type="submit">Add</button>
             </form>
         </div>
 
     </div>
-    <script defer>
-        let menuOpen = true;
-        function toggleMenu() {
-
-            document.querySelector(".menu-close").addEventListener('click', () => {
-                if (menuOpen) {
-
-
-                    console.log('Menu hidden');
-                    menuOpen = false;
-                    document.querySelector(".side-menu").style.display = "none"
-                    document.querySelector(".menu-toggle").style.display = "flex";
-                    document.querySelector('main').style.gridTemplateColumns = "1fr"
-                }
-            });
-            document.querySelector(".menu-toggle").addEventListener('click', () => {
-                if (!menuOpen) {
-
-                    console.log('Menu open');
-                    menuOpen = true;
-                    document.querySelector(".side-menu").style.display = 'block'
-                    document.querySelector(".menu-toggle").style.display = "none"
-                    document.querySelector('main').style.gridTemplateColumns = "2fr 8fr"
-                };
-            })
-        }
-        toggleMenu()
-
-        document.querySelector(".task-addition").addEventListener('click', () => {
-            document.querySelector('.modal').style.display = 'flex';
-
-        })
-        document.querySelector('.modal-close').addEventListener('click', () => {
-            document.querySelector('.modal').style.display = 'none';
-        })
-
-        window.addEventListener('load', (e) => {
-            const width = window.innerWidth
-            if (width < 800) {
-                const alreadyAccepted = localStorage.getItem('accept');
-                if (alreadyAccepted) {
-                } else {
-                    let accept = confirm(`For better experience, We recommend that you use a device with at least 1000 px. I understand`)
-                    if (accept) {
-                        localStorage.setItem("accept", true)
-                        alert("The experince may deteriorate")
-                    } else {
-                        alert("You will be redirected to the homepage");
-                        setTimeout(() => {
-                            window.location.pathname = '/'
-                        }, 3000)
-                    }
-                }
-
-            }
-            else if (width < 1000) {
-                console.log("Mini width");
-                menuOpen = false;
-                document.querySelector(".side-menu").style.display = "none"
-                document.querySelector(".menu-toggle").style.display = "flex";
-                document.querySelector('main').style.gridTemplateColumns = "1fr"
-            }
-        })
-    </script>
+    <div class="loader-div">
+        <div class="loader progress">
+            <div class="juice" data-percent=0%></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="./dashboard.js" type="module" defer></script>
 </body>
 
 </html>

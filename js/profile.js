@@ -119,7 +119,6 @@ document
   .addEventListener("submit", (e) => {
     e.preventDefault();
     let formData = new FormData(e.target);
-    console.log(formData);
     $.ajax({
       url: baseUrl + "api/v1/accounts/profile/" + user.id,
       method: "PUT",
@@ -164,7 +163,6 @@ $(".delete-account-form").on("submit", (e) => {
   e.preventDefault();
   let data = {};
   data["password"] = e.target.password.value;
-  console.log(data)
   Swal.fire({
     title: "Are you sure?",
     text: "You won't be able to revert this!",
@@ -187,7 +185,6 @@ $(".delete-account-form").on("submit", (e) => {
           logoutUser();
         },
         error: (error) => {
-          console.log(error)
           handleAjaxError(error);
         },
       });

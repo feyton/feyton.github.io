@@ -1,4 +1,9 @@
-import { baseUrl, displayLoader, notifyUser } from "../js/main.js";
+import {
+  baseUrl,
+  displayLoader,
+  handleAjaxError,
+  notifyUser,
+} from "../js/main.js";
 
 document.addEventListener("DOMContentLoaded", (e) => {
   // Email Validation
@@ -192,20 +197,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }, 3000);
       },
       error: (error) => {
-        switch (error.status) {
-          case 400:
-            let data = error.responseJSON.data;
-            let ul = document.createElement("ul");
-            Object.keys(data).forEach((key) => {
-              let el = `<li>${key}: ${data[key]}</li><br>`;
-              ul.innerHTML += el;
-            });
-            notifyUser(ul, "error");
-            break;
-
-          default:
-            break;
-        }
+        handleAjaxError(error);
       },
     });
   };
