@@ -1,21 +1,20 @@
 import { handlePagination } from "../dashboard/blog.js";
-import { baseUrl, notifyUser } from "./main.js";
+import { baseUrl, handleAjaxError } from "./main.js";
 
 const blogDiv = document.querySelector(".blog-list");
 
 const loadIndexBlogs = () => {
   $.ajax({
-    url: baseUrl + "api/v1/blogs",
+    url: baseUrl + "api/v1/blogs" + "?limit=3",
     success: (response) => {
-    
       let posts = response.data;
       if (posts.length == 0) {
       } else {
         renderBlogList(posts, blogDiv);
       }
     },
-    error: (data) => {
-      notifyUser(data.responseJSON.message, "error");
+    error: (error) => {
+      handleAjaxError(error);
     },
   });
 };
@@ -72,7 +71,7 @@ export const renderBlogList = (posts, postDiv, detailPage) => {
 
 export const loadBlogsForBlogger = (page, limit) => {
   const pageQ = page || 1;
-  const limitQ = limit || 3;
+  const limitQ = limit || 4;
   $.ajax({
     url: baseUrl + `api/v1/blogs?page=${pageQ}&limit=${limitQ}`,
     success: (data) => {
@@ -83,6 +82,9 @@ export const loadBlogsForBlogger = (page, limit) => {
         renderBlogList(posts, postDiv, "./detail.html");
         handlePagination(pagedata);
       }
+    },
+    error: (error) => {
+      handleAjaxError(error);
     },
   });
 };

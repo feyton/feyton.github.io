@@ -1,4 +1,9 @@
-import { baseUrl, notifyUser } from "../js/main.js";
+import {
+  actionLogger,
+  baseUrl,
+  handleAjaxError,
+  notifyUser,
+} from "../js/main.js";
 const token = localStorage.getItem("token");
 
 const form = document.querySelector("#post-edit-form");
@@ -45,19 +50,16 @@ form.addEventListener("submit", (e) => {
     success: () => {
       notifyUser("Your post has been updated");
       localStorage.removeItem("activeEdit");
+      actionLogger({ cat: "edit", activity: "Edited a post" });
       setTimeout(() => {
         window.location.pathname = "/dashboard/blog.html";
       }, 3000);
     },
     timout: 10000,
     error: (error) => {
-      let data = error.responseJSON.data;
-      let ul = document.createElement("ul");
-      Object.keys(data).forEach((key) => {
-        let el = `<li>${key}: ${data[key]}</li>`;
-        ul.innerHTML += el;
-      });
-      notifyUser(ul, "error");
+      handleAjaxError(error);
     },
   });
 });
+
+

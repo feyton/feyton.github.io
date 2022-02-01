@@ -405,23 +405,29 @@ main .blog-list .list-head, main .blog-list .list-items .item {
     padding: 5px;
     font-family: var(--head-font);
 }
+
 main .blog-list .true {
     font-weight: bold;
     color: #00865a;
 }
-main .blog-list .true::before{
+
+main .blog-list .true::before {
     content: "\f560";
-    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     margin-right: 3px;
     color: green;
 }
+
 main .blog-list .false {
     font-weight: bold;
-    color: #012049; 
+    color: #012049;
 }
+
 main .blog-list .false::before {
     content: "\f28d";
-    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     margin-right: 3px;
     color: red;
 }
@@ -583,6 +589,19 @@ input[type="checkbox"]:disabled {
     margin: .3rem;
     cursor: pointer;
     text-align: center;
+}
+.dashboard .content .title-list .card .body .s-action a {
+    color: white;
+}
+.latest-bubble-actions .s-action span {
+    cursor: not-allowed;
+}
+.latest-bubble-actions .s-action.delete {
+    background-color: rgb(129, 31, 31);
+    color: wheat;
+}
+.latest-bubble-actions .s-action.create {
+    background-color: rgb(51, 139, 10);
 }
 
 .main-dashboard {
@@ -901,19 +920,47 @@ main .user-list button {
     font-weight: bold;
     transition: .3s all;
 }
+
 .pagination span i {
     pointer-events: none;
     font-weight: bold;
 }
+
 .pagination span.active {
     background-color: rgb(34, 12, 12);
     color: white;
 }
+
 .pagination span:hover {
     transition: .3s all;
     background-color: #1b2630;
     color: white;
 }
+.action-item {
+    border-radius: 5px;
+    margin-bottom: 2px;
+}
+.action-item.delete {
+    background-color: rgba(99, 22, 48, 0.274);
+    color: rgb(136, 19, 19);
+}
+
+.action-item.create {
+    background-color: rgba(91, 189, 71, 0.932);
+}
+
+.action-item.edit {
+    background-color: rgb(194, 247, 97);
+}
+
+.action-item.draft {
+    background-color: rgba(4, 44, 97, 0.664)
+}
+
+.action-item.publish {
+    background-color: #6bc74faf;
+}
+
 @media screen and (max-width: 1250px) {
     body {
         min-width: 300px !important;

@@ -1,42 +1,54 @@
-import { baseUrl, handleAjaxError, notifyUser } from "./main.js";
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@8/src/sweetalert2.js";
+import {
+  actionLogger,
+  baseUrl,
+  getOrSetItem,
+  handleAjaxError,
+  notifyUser,
+} from "./main.js";
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
 
 const postID = localStorage.getItem("postID");
-if (!postID) {
-  notifyUser(
-    "It seems like you just landed here. Let me get some posts",
-    "info"
-  );
-  $.ajax({
-    url: baseUrl + "api/v1/blogs",
-    success: (response) => {
-      let posts = response.data;
-      if (posts.length == 0) {
-        notifyUser("Nothing to see here yet!", "info");
-      } else {
-        let id = posts[0]._id;
-        localStorage.setItem("postID", id);
-        notifyUser("We are getting something for you.");
-        setTimeout(() => {
-          location.reload();
-        }, 3000);
-      }
-    },
-  });
-} else {
-  $.ajax({
-    url: baseUrl + "api/v1/blogs/" + postID,
-    success: (response) => {
-      console.log(response)
-      let post = response.data.blog;
-      renderPost(post);
-      renderComment(response.data.comments);
-    },
-    error: (error) => {
-      handleAjaxError(error);
-    },
-  });
+if (location.pathname == "/pages/detail.html") {
+  if (!postID) {
+    notifyUser(
+      "It seems like you just landed here. Let me get some posts",
+      "info"
+    );
+    $.ajax({
+      url: baseUrl + "api/v1/blogs",
+      success: (response) => {
+        let posts = response.data;
+        if (posts.length == 0) {
+          notifyUser("Nothing to see here yet!", "info");
+        } else {
+          let id = posts[0]._id;
+          localStorage.setItem("postID", id);
+          notifyUser("We are getting something for you.");
+          setTimeout(() => {
+            location.reload();
+          }, 3000);
+        }
+      },
+      error: (error) => {
+        handleAjaxError(error);
+      },
+    });
+  } else {
+    $.ajax({
+      url: baseUrl + "api/v1/blogs/" + postID,
+      method: "GET",
+      success: (response) => {
+        let post = response.data.blog;
+        renderPost(post);
+        renderComment(response.data.comments);
+      },
+      error: (error) => {
+        handleAjaxError(error);
+      },
+    });
+  }
 }
 
 const renderPost = (post) => {
@@ -89,8 +101,14 @@ const renderComment = (comments) => {
         <div class="comment-footer">
             <span class="comment-date">${new Date(
               comment.date
-            ).toLocaleDateString("de-DE")}</span> <span><i
-                    class="fas fa-star fa-lg"></i>&nbsp;${comment.likes}</span>
+            ).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}</span> <span><i
+                    class="fas fa-star fa-lg like-comment" data-ref="${
+                      comment._id
+                    }"></i>&nbsp;${comment.likes}</span>
         </div>
 
         <hr>
@@ -110,7 +128,7 @@ const saveComment = () => {
     } else if (form.body.value.length < 10 || form.body.value.length > 200) {
       notifyUser("At least 10 characters are required");
     } else {
-      let blogId = localStorage.getItem("postID");
+      const blogId = localStorage.getItem("postID");
       $.ajax({
         url: baseUrl + "api/v1/blogs/comment/" + blogId,
         method: "POST",
@@ -122,6 +140,7 @@ const saveComment = () => {
           notifyUser("Your comment has been received.");
           displayComment(response.data);
           form.reset();
+          actionLogger({ cat: "create", activity: "Added new comment" });
         },
         error: (error) => {
           handleAjaxError(error);
@@ -144,7 +163,9 @@ const displayComment = (comment) => {
         "en-US",
         { day: "2-digit", month: "short", year: "numeric" }
       )}</span> <span><i
-              class="fas fa-star fa-lg"></i>&nbsp;${comment.likes}</span>
+              class="fas fa-star fa-lg"></i>&nbsp;<b class="like-count">${
+                comment.likes
+              }<b></span>
   </div>
 
   <hr>
@@ -152,3 +173,66 @@ const displayComment = (comment) => {
   `;
   commentDiv.innerHTML += commentElement;
 };
+
+$(document).on("click", ".like-comment", (e) => {
+  const ref = e.target.getAttribute("data-ref");
+
+  const likedComments = getOrSetItem("liked-comments");
+  let likes = $(this).closest(".like-count").text();
+
+  if (!likedComments.includes(ref)) {
+    e.target.classList.toggle("animate");
+    e.target.classList.add("fa-check");
+    e.target.classList.remove("fa-star");
+    likedComments.push(ref);
+    console.log("Liked");
+
+    $(this)
+      .closest(".like-count")
+      .text((likes += 1));
+    localStorage.setItem("liked-comments", JSON.stringify(likedComments));
+    actionLogger({ cat: "create", activity: "Liked a comment" });
+    $.ajax({
+      url: baseUrl + `api/v1/blogs/comment/${ref}?action=like`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
+      },
+      success: (response) => {
+        notifyUser("You like has been recorded");
+      },
+      error: (error) => {
+        handleAjaxError(error);
+      },
+    });
+  } else {
+    Swal.fire({
+      title: "Dislike comment",
+      text: "You already liked the. This action will remove it from your favorites",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, dislike",
+      cancelButtonText: "No",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.value) {
+        likedComments.pop(ref);
+        console.log("Disliked");
+        actionLogger({ cat: "delete", activity: "Disliked a comment" });
+        localStorage.setItem("liked-comments", JSON.stringify(likedComments));
+        $.ajax({
+          url: baseUrl + `api/v1/blogs/comment/${ref}?action=dislike`,
+          beforeSend: (xhr) => {
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+          },
+          success: (response) => {
+            notifyUser("Your like has been removed");
+          },
+          error: (error) => {
+            handleAjaxError(error);
+          },
+        });
+      } else {
+      }
+    });
+  }
+});

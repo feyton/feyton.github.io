@@ -13,7 +13,7 @@ export const setWithExpiry = (key, value, time) => {
   const now = new Date();
   const item = {
     value: value,
-    expiry: now.getTime() + time,
+    expiry: now.getMinutes() + time,
   };
   localStorage.setItem(key, JSON.stringify(item));
 };
@@ -22,11 +22,19 @@ export const getItemWithEpiry = (key) => {
   if (!item) return null;
   const object = JSON.parse(item);
   const now = new Date();
-  if (now.getTime() > object.expiry) {
+  if (now.getMinutes() > object.expiry) {
     localStorage.removeItem(key);
     return null;
   }
   return object.value;
+};
+export const getOrSetItem = (item) => {
+  let stored = localStorage.getItem(item);
+  if (!stored) {
+    stored = localStorage.setItem(item, []);
+    return [];
+  }
+  return JSON.parse(stored);
 };
 $.ajaxSetup({
   timeout: 8000, //Time in milliseconds
@@ -378,7 +386,6 @@ $(document).on("submit", "#password-reset-form", async (e) => {
   e.preventDefault();
   const email = e.target.email.value;
 
-
   if (email !== "") {
     let data = { email: email };
     $.ajax({
@@ -397,3 +404,69 @@ $(document).on("submit", "#password-reset-form", async (e) => {
     });
   }
 });
+
+export const actionLogger = (action) => {
+  let actions = getOrSetItem("actions");
+
+  if (actions.length > 10) {
+    actions = actions.slice(1, 10);
+  }
+  const user = JSON.parse(localStorage.getItem("user"));
+  let date = new Date();
+
+  let newAction = {
+    category: action.cat,
+    activity: action.activity,
+    model: action.model,
+    time: date,
+    user: user.name,
+  };
+
+  actions.push(newAction);
+  localStorage.setItem("actions", JSON.stringify(actions));
+  renderDashboard();
+};
+
+export const renderDashboard = () => {
+  let terms = getOrSetItem("terms");
+  let actions = getOrSetItem("actions");
+  $("#latest-search-div").html("");
+  $("#actions-list").html("");
+  $(".latest-bubble-actions").html("");
+  terms.forEach((term) => {
+    $("#latest-search-div").prepend(
+      `
+      <div class="s-action"><span>${term}</span></div>
+      `
+    );
+  });
+  actions.forEach((action) => {
+    $("#actions-list").prepend(
+      `
+    <div class="action-item ${action.category}">
+        <span>${new Date(action.time).toLocaleDateString("en-US", {
+          hour: "numeric",
+          month: "numeric",
+          year: "numeric",
+          day: "numeric",
+          minute: "numeric",
+        })}</span>
+        <span class="capitalize">${action.activity}</span>
+        <span class="capitalize">${action.category}</span>
+    </div>
+    `
+    );
+  });
+
+  for (var i = 0; i < actions.length; i++) {
+    actions = actions.reverse()
+    if (i > 3) {
+      break;
+    }
+    $(".latest-bubble-actions").append(
+      ` <div class="s-action ${actions[i].category}"><span>
+      ${actions[i].activity}</span></div>
+      `
+    );
+  }
+};

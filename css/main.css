@@ -611,11 +611,12 @@ main .hero button:hover {
 
 
 .blog-card p {
-    font-family: var(--Josefin);
-    padding: 0px 10px;
+    font-family: var(--Lexend);
+    padding: 2px 10px;
     margin-bottom: 5px;
     font-size: 1.1rem;
-    line-height: 1.1;
+    line-height: 1.2;
+    font-weight: normal;
 }
 
 .btn {
@@ -1288,6 +1289,15 @@ footer .about a:first-child {
         flex-direction: row;
         justify-content: center;
     }
+    .author .coffee {
+        width: 150px !important;
+    }
+    .author .coffee span:first-child {
+        padding: .5rem !important;
+    }
+    .author {
+        padding: .2rem;
+    }
 
 }
 
@@ -1295,6 +1305,7 @@ footer .about a:first-child {
     header nav .menu {
         padding-right: 1rem;
     }
+    
 }
 
 @media only screen and (max-width:815px) {
@@ -1366,6 +1377,12 @@ footer .about a:first-child {
     .footer .social,
     .footer .form {
         padding: 3rem .2rem;
+    }
+
+    .blog-info .blog-detail-content img {
+        object-fit: cover !important;
+        max-width: 100%;
+        max-height: 300px;
     }
 }
 
@@ -1452,7 +1469,9 @@ footer .about a:first-child {
     }
 
     header nav .menu-items {
-        display: none;
+        /* display: none; */
+        display: block !important;
+        width: 100%;
 
     }
 
@@ -1470,6 +1489,15 @@ footer .about a:first-child {
         padding-bottom: 0px;
         margin-bottom: 0px;
     }
+
+    .blog-section {
+        padding: 1rem .2rem;
+    }
+
+    .blog-list {
+        margin-left: .1rem;
+    }
+
 }
 
 @media screen and (max-width:400px) {
@@ -1491,6 +1519,21 @@ footer .about a:first-child {
     .footer .social,
     .footer .form {
         padding: 1rem 1rem;
+    }
+    #blog-section {
+        font-size: .4rem !important;
+    }
+
+    .comments .comment-form {
+        width: 100%;
+    }
+
+    .comments .comment-form textarea {
+        width: 100%;
+    }
+
+    .author .coffee {
+        display: none !important;
     }
 
 

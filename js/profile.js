@@ -1,5 +1,6 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@8/src/sweetalert2.js";
 import {
+  actionLogger,
   baseUrl,
   handleAjaxError,
   hideModals,
@@ -108,6 +109,7 @@ form.addEventListener("submit", (e) => {
     },
     success: (data) => {
       notifyUser("Your profile has been updated");
+      actionLogger({ cat: "edit", activity: "Updated profile" });
       loadUserProfile(data.data);
       populateForm(data.data);
     },
@@ -130,6 +132,7 @@ document
       },
       success: (response) => {
         notifyUser("Your profile has been updated");
+        actionLogger({ cat: "edit", activity: "Updated profile picture" });
         loadUserProfile(response.data);
         populateForm(response.data);
         const userData = {

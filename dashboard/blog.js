@@ -1,5 +1,11 @@
 import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@8/src/sweetalert2.js";
-import { baseUrl, handleAjaxError, notifyUser } from "../js/main.js";
+import {
+  actionLogger,
+  baseUrl,
+  getOrSetItem,
+  handleAjaxError,
+  notifyUser,
+} from "../js/main.js";
 const token = localStorage.getItem("token");
 
 const getBlogsAdmin = (page, limit) => {
@@ -53,6 +59,7 @@ if (window.location.pathname == "/dashboard/blog.html") {
           },
           success: (data) => {
             notifyUser("The post has been deleted");
+            actionLogger({ cat: "delete", activity: "Deleted a post" });
             getBlogsAdmin();
           },
           error: (error) => {
@@ -102,6 +109,7 @@ const searchResult = (term) => {
   $.ajax({
     url: baseUrl + `api/v1/blogs/search?q=${term}`,
     success: (response) => {
+      searchTermLogger(term);
       if (response.data.length > 0) {
         $(".page-title").html(`Result for: <b>${term}</b>`);
         renderResult(response.data);
@@ -194,13 +202,15 @@ export const handlePagination = (pageData) => {
   }
 };
 
-document.addEventListener("click", (e) => {
-  if (e.target.matches(".page-nav")) {
-    let page = e.target.getAttribute("data-page");
-    page = parseInt(page);
-    getBlogs(page);
-  }
-});
+if (location.pathname == "/dashboard/blog.html") {
+  document.addEventListener("click", (e) => {
+    if (e.target.matches(".page-nav")) {
+      let page = e.target.getAttribute("data-page");
+      page = parseInt(page);
+      getBlogsAdmin(page);
+    }
+  });
+}
 
 const executeAdminAction = (action, idList) => {
   let list = JSON.stringify(idList);
@@ -213,10 +223,20 @@ const executeAdminAction = (action, idList) => {
     data: { action: action, idList: list },
     success: (response) => {
       notifyUser("Your action has been successfull");
+      actionLogger({ cat: action, activity: `Bulk ${action}` });
       getBlogsAdmin();
     },
     error: (error) => {
       notifyUser(error.responseJSON.message);
     },
   });
+};
+
+const searchTermLogger = (term) => {
+  let terms = getOrSetItem("terms");
+  if (terms.length > 5) {
+    terms = terms.slice(1, 5);
+  }
+  terms.push(term);
+  localStorage.setItem("terms", JSON.stringify(terms));
 };
